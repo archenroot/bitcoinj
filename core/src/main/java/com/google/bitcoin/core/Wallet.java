@@ -206,6 +206,8 @@ public class Wallet implements Serializable, BlockChainListener, PeerFilterProvi
     public Wallet(NetworkParameters params, KeyChainGroup keyChainGroup) {
         this.params = checkNotNull(params);
         this.keychain = checkNotNull(keyChainGroup);
+        if (params == UnitTestParams.get())
+            this.keychain.setLookaheadSize(5);  // Cut down excess computation for unit tests.
         watchedScripts = Sets.newHashSet();
         unspent = new HashMap<Sha256Hash, Transaction>();
         spent = new HashMap<Sha256Hash, Transaction>();
